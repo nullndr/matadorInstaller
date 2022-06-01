@@ -14,11 +14,11 @@ installMantine() {
   case $REPLY in 
 
     y | Y ) 
-      remixRootDir=$1
-      currentDir=$(pwd)
+      local remixRootDir=$1
+      local currentDir=$(pwd)
       cd $remixRootDir
 
-      hasMantineBeenInstalled=0
+      local hasMantineBeenInstalled=0
       if [[ -f "package.json" ]]; then
         if ! npm --version > /dev/null 2>&1; then
           echo -e "\x1b[1m[ \x1b[31mError\x1b[39m ] I can't run \x1b[36mnpm\x1b[39m\x1b[0m"
@@ -82,7 +82,7 @@ installMantine() {
 }
 
 checkRemixDir() {
-  remixRootDir=$(realpath $1)
+  local remixRootDir=$(realpath $1)
   if ! [[ -f "${remixRootDir}/remix.config.js" ]]; then
     echo -e "\x1b[1m[ \x1b[31mError\x1b[39m ] the \x1b[36m$remixRootDir\x1b[39m directory does not look like a Remix project, aborting\x1b[0k"
     echo -e -n "\x1b[1m[ ❌ ] aborting \x1b[36mMatador\x1b[39m installation for the above reasons\x1b[0m "
@@ -92,8 +92,8 @@ checkRemixDir() {
 }
 
 checkAppDir() {
-  isError=0
-  remixAppDir=$1
+  local isError=0
+  local remixAppDir=$1
   if [[ ! -d "$remixAppDir" ]]; then
     echo -e "\x1b[1m[ \x1b[31mError\x1b[39m ] directory \x1b[36m$remixAppDir\x1b[39m not found\x1b[0m"
     isError=1
@@ -126,13 +126,13 @@ main() {
     exit 1
   fi
 
-  remixRootDir=$(checkRemixDir $1)
-  remixAppDir=$(realpath "$1/$([[ $2 != "" ]] && echo $2 || echo "app")")
-  checkAppDir $remixAppDir
+  local remixRootDir=$(checkRemixDir $1)
+  local remixAppDir=$(realpath "$1/$([[ $2 != "" ]] && echo $2 || echo "app")")
+  local checkAppDir $remixAppDir
 
   installMantine $remixRootDir
 
-  tempDir="/tmp/matador-$(uuidgen -t)"
+  local tempDir="/tmp/matador-$(uuidgen -t)"
 
   mkdir $tempDir
 
@@ -147,7 +147,7 @@ main() {
 
   echo -e "\x1b[1m[ ℹ️  ] Extracting \x1b[36mMatador\x1b[39m from repo\x1b[0m"
 
-  libDir="$remixAppDir/lib"
+  local libDir="$remixAppDir/lib"
   if ! [[ -d $libDir ]]; then 
     mkdir $libDir
   fi
